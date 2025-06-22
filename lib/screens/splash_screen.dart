@@ -25,10 +25,10 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/logors.png', width: 100),
+            Image.asset('assets/images/logosimrshijau.jpg', width: 100),
             const SizedBox(height: 16),
             const Text(
-              'SIaPotik',
+              'SIMRS',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             const SizedBox(height: 8),
             const Text(
-              'Cepat, Tepat, dan Aman',
+              'Perawat',
               style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
             ),
             const SizedBox(height: 50),

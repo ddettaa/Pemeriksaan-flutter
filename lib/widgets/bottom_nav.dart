@@ -9,7 +9,8 @@ class BottomNav extends StatelessWidget {
     // Menggunakan Container untuk memberikan background dan border radius
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white, // Warna latar belakang nav bar
+        color: const Color.fromARGB(
+            255, 105, 219, 188), // Warna latar belakang nav bar
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
@@ -35,15 +36,15 @@ class BottomNav extends StatelessWidget {
             switch (index) {
               case 0:
                 if (currentIndex != 0)
-                  Navigator.pushReplacementNamed(context, '/antrian');
+                  Navigator.pushReplacementNamed(context, '/dashboard-perawat');
                 break;
               case 1:
                 if (currentIndex != 1)
-                  Navigator.pushReplacementNamed(context, '/histori');
+                  Navigator.pushReplacementNamed(context, '/pasien');
                 break;
               case 2:
                 if (currentIndex != 2)
-                  Navigator.pushReplacementNamed(context, '/stok');
+                  Navigator.pushReplacementNamed(context, '/histori');
                 break;
             }
           },
@@ -52,7 +53,8 @@ class BottomNav extends StatelessWidget {
               .transparent, // Dibuat transparan agar warna Container terlihat
           elevation: 0, // Shadow diatur oleh Container, jadi ini di-nol-kan
           type: BottomNavigationBarType.fixed, // Tipe agar item tidak bergeser
-          selectedItemColor: Colors.indigo[800], // Warna untuk item yang aktif
+          selectedItemColor: const Color.fromARGB(
+              255, 32, 95, 76), // Warna untuk item yang aktif
           unselectedItemColor:
               Colors.grey[600], // Warna untuk item yang tidak aktif
           selectedFontSize: 12,
@@ -64,15 +66,15 @@ class BottomNav extends StatelessWidget {
             BottomNavigationBarItem(
                 icon: Icon(Icons.groups_outlined),
                 activeIcon: Icon(Icons.groups),
-                label: 'Antrean'),
+                label: 'Utama'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.receipt_long_outlined),
                 activeIcon: Icon(Icons.receipt_long),
-                label: 'Histori'),
+                label: 'Pasien'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.inventory_2_outlined),
                 activeIcon: Icon(Icons.inventory_2),
-                label: 'Stok Obat'),
+                label: 'Histori'),
           ],
         ),
       ),

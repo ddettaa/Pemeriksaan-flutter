@@ -4,7 +4,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'screens/splash_screen.dart';
 import 'screens/login_screen.dart';
-import 'screens/antrian_screen.dart';
+import 'screens/halamanAwal_screen.dart';
 import 'screens/histori_screen.dart';
 import 'screens/stok_obat_screen.dart';
 import 'http_overrides.dart'; // Jika Anda masih menggunakannya
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SIaPotik',
+      title: 'Pemeriksaan',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           // Mengganti ke indigo agar lebih serasi dengan tema aplikasi Anda
@@ -51,9 +51,11 @@ class MyApp extends StatelessWidget {
           )),
       initialRoute: '/splash',
       routes: {
+        // Rute awal aplikasi
+        '/dashboard-perawat': (context) => const HalamanAwalScreen(),
+        '/dashboard-dokter': (context) => const HalamanAwalScreen(),
         '/splash': (context) => const SplashScreen(),
         '/login': (context) => const LoginScreen(),
-        '/antrian': (context) => const AntrianScreen(),
         '/histori': (context) => const HistoriScreen(),
         '/stok': (context) => const StokObatScreen(),
       },
