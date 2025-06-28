@@ -6,7 +6,7 @@ import 'screens/splash_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/halamanAwal_screen.dart';
 import 'screens/histori_screen.dart';
-import 'screens/stok_obat_screen.dart';
+import 'screens/pemeriksaan_screen.dart';
 import 'http_overrides.dart'; // Jika Anda masih menggunakannya
 
 // --- PERBAIKAN DI SINI ---
@@ -54,10 +54,11 @@ class MyApp extends StatelessWidget {
         // Rute awal aplikasi
         '/dashboard-perawat': (context) => const HalamanAwalScreen(),
         '/dashboard-dokter': (context) => const HalamanAwalScreen(),
+        '/pemeriksaan': (context) => const PemeriksaanScreen(),
         '/splash': (context) => const SplashScreen(),
         '/login': (context) => const LoginScreen(),
-        '/histori': (context) => const HistoriScreen(),
-        '/stok': (context) => const StokObatScreen(),
+        '/histori': (context) =>
+            const HistoriScreen(), // Tidak perlu historiData
       },
     );
   }

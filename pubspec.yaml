@@ -29,6 +29,7 @@ flutter:
   - assets/images/dokter.jpeg
   - assets/images/logoSIMRS.svg
   - assets/images/logosimrshijau.jpg
+  - assets/images/3d-removebg-preview.png
 
 flutter_launcher_icons:
   android: true

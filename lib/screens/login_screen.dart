@@ -9,7 +9,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _authService = AuthService();
 
@@ -17,29 +17,51 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
 
   Future<void> _handleLogin() async {
-    final email = _emailController.text.trim();
+    final username = _usernameController.text.trim();
     final password = _passwordController.text;
 
-    if (email.isEmpty || password.isEmpty) {
+    if (username.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Email dan password wajib diisi')),
+        const SnackBar(content: Text('Username dan password wajib diisi')),
       );
       return;
     }
 
     setState(() => _isLoading = true);
     try {
-      final result = await _authService.login(email, password);
-      final role = result['role'] as int?;
+      final result = await _authService.login(username, password);
+      // Debug print untuk memastikan struktur response
+      print('LOGIN RESULT: $result');
+
+      // Pastikan response sukses
+      final success = result['success'] == true;
       final message = result['message'] as String? ?? 'Login gagal';
 
-      if (role == 3) {
-        Navigator.pushReplacementNamed(context, '/dashboard-dokter');
-      } else if (role == 4) {
-        Navigator.pushReplacementNamed(context, '/dashboard-perawat');
-      } else {
+      if (!success) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(message)),
+        );
+        setState(() => _isLoading = false);
+        return;
+      }
+
+      // Ambil role dari response yang benar
+      final user = result['data']?['user'];
+      final role = user?['role']?.toString()?.toUpperCase();
+
+      print('ROLE: $role');
+
+      if (role == 'DOKTER') {
+        Future.microtask(() {
+          Navigator.pushReplacementNamed(context, '/dashboard-dokter');
+        });
+      } else if (role == 'PERAWAT') {
+        Future.microtask(() {
+          Navigator.pushReplacementNamed(context, '/dashboard-perawat');
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Role tidak dikenali: $role')),
         );
       }
     } catch (e) {
@@ -53,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -77,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: MediaQuery.of(context).size.height * 0.35,
                         padding: const EdgeInsets.all(20),
                         child: Image.asset(
-                          'assets/images/logosimrshijau.jpg',
+                          'assets/images/3d-removebg-preview.png',
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -105,12 +127,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               const SizedBox(height: 32),
 
-                              // -- Email field --
+                              // -- Username field --
                               TextField(
-                                controller: _emailController,
-                                keyboardType: TextInputType.emailAddress,
+                                controller: _usernameController,
+                                keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
-                                  hintText: 'Email',
+                                  hintText: 'Username',
                                   prefixIcon: const Icon(Icons.person),
                                   filled: true,
                                   fillColor: Colors.grey[200],

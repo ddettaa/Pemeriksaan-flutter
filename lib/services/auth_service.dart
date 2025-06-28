@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class AuthService {
-  final String _baseUrl = 'https://ti054a01.agussbn.my.id/api';
+  final String _baseUrl = 'https://ti054a02.agussbn.my.id/api';
 
   /// Melakukan login, mengembalikan map berisi:
-  /// - 'role'   : int? (null jika gagal)
-  /// - 'token'  : String? (access token, null jika gagal)
+  /// - 'data': Map user dan token jika sukses, null jika gagal
   /// - 'message': String
-  Future<Map<String, dynamic>> login(String email, String password) async {
+  /// - 'success': bool
+  Future<Map<String, dynamic>> login(String username, String password) async {
     final url = Uri.parse('$_baseUrl/login');
 
     final response = await http.post(
@@ -18,12 +18,11 @@ class AuthService {
         'Accept': 'application/json',
       },
       body: jsonEncode({
-        'email': email,
+        'username': username,
         'password': password,
       }),
     );
 
-    // Debug: lihat status & body
     print('🔔 [AuthService.login] status: ${response.statusCode}');
     print('🔔 [AuthService.login] body:   ${response.body}');
 
@@ -33,23 +32,29 @@ class AuthService {
 
     final Map<String, dynamic> body = json.decode(response.body);
 
-    // Jika ada field 'user' dan 'access_token', anggap login sukses
+    // Standarisasi agar selalu return 'data' dan 'message'
     if (body.containsKey('user') && body.containsKey('access_token')) {
-      final user = body['user'] as Map<String, dynamic>;
-      final int role = user['role'] as int;
-      final String token = body['access_token'] as String;
-
+      // Format: {user: {...}, access_token: "...}
       return {
-        'role': role,
-        'token': token,
+        'success': true,
         'message': 'Login berhasil',
+        'data': {
+          'user': body['user'],
+          'token': body['access_token'],
+        },
+      };
+    } else if (body.containsKey('data') && body['data'] is Map) {
+      // Format: {data: {user: {...}, token: "..."}, ...}
+      return {
+        'success': body['success'] ?? true,
+        'message': body['message'] ?? 'Login berhasil',
+        'data': body['data'],
       };
     } else {
-      // Kalau formatnya tidak sesuai atau user/token tidak ada
       return {
-        'role': null,
-        'token': null,
+        'success': false,
         'message': body['message'] as String? ?? 'Login gagal',
+        'data': null,
       };
     }
   }
